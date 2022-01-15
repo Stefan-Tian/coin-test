@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 
 const useApiRequest = <P, R>(
   serviceCall: (params: P) => Promise<R>,
@@ -8,6 +8,14 @@ const useApiRequest = <P, R>(
   const [data, setData] = useState<R | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const mountedRef = useRef(false);
+
+  useLayoutEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -15,16 +23,18 @@ const useApiRequest = <P, R>(
 
     serviceCall(params)
       .then((data) => {
-        setData(data);
+        if (!mountedRef.current) return;
         setLoading(false);
+        setData(data);
       })
       .catch((error) => {
-        setError(error);
+        if (!mountedRef.current) return;
         setLoading(false);
+        setError(error);
       });
   }, [params]);
 
-  return { data, loading, error, setParams };
+  return { data, loading, error, params, setParams };
 };
 
 export default useApiRequest;

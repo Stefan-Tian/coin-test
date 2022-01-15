@@ -5,21 +5,29 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import { useRef } from 'react';
 import services from '../../services';
 import useApiRequest from '../../hooks/useApiRequest';
-import useSortList from '../../hooks/useSortList';
 import CoinRow from '../CoinRow';
-import { CoinMarketData } from '../../services/types';
+import { CoinMarketData, MarketsParams, OrderType } from '../../services/types';
+import usePagination from '../../hooks/usePagination';
 
-const defaultMarketParams = {
+const defaultMarketParams: MarketsParams = {
   vsCurrency: 'usd',
+  page: 1,
+  perPage: 25,
+  order: 'gecko_desc',
 };
 
 const CoinTable = () => {
-  const { data, loading, error } = useApiRequest(
+  const { data, error, params, setParams } = useApiRequest(
     services.getMarket,
     defaultMarketParams
   );
+
+  const listRef = useRef<FlatList<CoinMarketData>>(null);
+
+  const { fullList } = usePagination(data, params);
 
   const sortListBy = (order: OrderType) => {
     if (!listRef.current) return;
@@ -41,13 +49,12 @@ const CoinTable = () => {
     }));
   };
 
-  if (loading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
+  const fetchMorePages = () => {
+    setParams((oldParams) => ({
+      ...oldParams,
+      page: oldParams.page + 1,
+    }));
+  };
 
   if (error) {
     return (
@@ -64,27 +71,27 @@ const CoinTable = () => {
       </TouchableOpacity>
       <FlatList
         style={styles.list}
-        data={sortedList}
+        data={fullList}
+        ref={listRef}
         renderItem={({ item }) => <CoinRow coinData={item} />}
-        keyExtractor={(item) => item.name}
+        keyExtractor={(item) => item.id}
         stickyHeaderIndices={[0]}
+        onEndReached={fetchMorePages}
+        onEndReachedThreshold={0.5}
         ListHeaderComponent={() => (
           <View style={styles.header}>
-            <TouchableOpacity
-              style={styles.nameCell}
-              onPress={() => sortListBy('name')}
-            >
+            <View style={styles.nameCell}>
               <Text>Name</Text>
-            </TouchableOpacity>
+            </View>
             <TouchableOpacity
               style={styles.numberCell}
-              onPress={() => sortListBy('currentPrice')}
+              onPress={() => sortListBy('price_desc')}
             >
               <Text>Price(USD)</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.numberCell}
-              onPress={() => sortListBy('totalVolume')}
+              onPress={() => sortListBy('volume_desc')}
             >
               <Text>Total Volume</Text>
             </TouchableOpacity>
@@ -109,7 +116,6 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderWidth: 2,
     borderColor: '#2976ca',
-    outline: 0,
     textAlign: 'center',
     borderRadius: 4,
     marginBottom: 8,
@@ -145,7 +151,6 @@ const styles = StyleSheet.create({
   nameCell: {
     width: '30%',
     textAlign: 'left',
-    cursor: 'pointer',
   },
 });
 
