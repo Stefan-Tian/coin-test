@@ -2,7 +2,7 @@ const camelizeStr = (str: string): string => {
   return str.replace(/[_.-](\w|$)/g, (_, x) => x.toUpperCase());
 };
 
-const snakingizeStr = (str: string): string => {
+const snakifyStr = (str: string): string => {
   return str.replace(/(?:^|\.?)([A-Z])/g, (_, x) => `_${x.toLowerCase()}`);
 };
 
@@ -18,6 +18,7 @@ function convertCase(convertFunc: ConvertFunc) {
       Object.keys(input).forEach((k: string) => {
         newObj[convertFunc(k)] = converter(input[k]);
       });
+      return newObj;
     }
 
     return input;
@@ -28,5 +29,5 @@ function convertCase(convertFunc: ConvertFunc) {
 
 export default {
   camelizeKeys: convertCase(camelizeStr),
-  snakingizeKeys: convertCase(snakingizeStr),
+  snakifyKeys: convertCase(snakifyStr),
 };

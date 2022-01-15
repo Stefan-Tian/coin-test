@@ -18,7 +18,7 @@ instance.interceptors.response.use(
 type ApiMethod = 'get' | 'post' | 'put' | 'delete';
 export default function <T>(method: ApiMethod, url: string, data: any = null) {
   const requestType = method.toLowerCase();
-  const normalizedParams = utils.snakingizeKeys(data);
+  const normalizedParams = utils.snakifyKeys(data);
 
   switch (requestType) {
     case 'get':
