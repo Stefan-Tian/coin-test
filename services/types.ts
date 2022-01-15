@@ -1,4 +1,4 @@
-export type MarketsResponse = {
+export type CoinMarketData = {
   id: string;
   symbol: string;
   name: string;
@@ -20,9 +20,11 @@ export type MarketsResponse = {
   ath: number;
   athChangePercentage: number;
   athDate: string;
-  roi: number | null;
+  roi: number;
   lastUpdated: string;
 };
+
+export type MarketsResponse = CoinMarketData[];
 
 export type OrderType =
   | 'market_cap_desc'
