@@ -35,6 +35,7 @@ const CoinTable = () => {
         data={data}
         renderItem={({ item }) => <CoinRow coinData={item} />}
         keyExtractor={(item) => item.name}
+        stickyHeaderIndices={[0]}
         ListHeaderComponent={() => (
           <View style={styles.header}>
             <Text style={styles.nameCell}>Name</Text>
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 50,
     paddingHorizontal: 30,
+    backgroundColor: '#fff',
   },
   numberCell: {
     width: '35%',
