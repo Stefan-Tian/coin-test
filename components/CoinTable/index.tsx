@@ -42,7 +42,7 @@ const CoinTable = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.reset} onPress={resetOrder}>
-        <Text>reset filter</Text>
+        <Text style={styles.resetText}>reset filter</Text>
       </TouchableOpacity>
       <FlatList
         style={styles.list}
@@ -87,16 +87,18 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   reset: {
-    padding: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderWidth: 2,
     borderColor: '#2976ca',
-    color: '#2976fa',
-    fontWeight: 'bold',
     outline: 0,
-    width: 120,
     textAlign: 'center',
     borderRadius: 4,
     marginBottom: 8,
+  },
+  resetText: {
+    color: '#2976fa',
+    fontWeight: 'bold',
   },
   list: {
     borderColor: '#ccc',
