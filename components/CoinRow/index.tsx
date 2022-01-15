@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   numberCell: {
     width: '35%',
     textAlign: 'right',
+    fontVariantNumeric: 'tabular-nums',
   },
   nameContainer: {
     display: 'flex',

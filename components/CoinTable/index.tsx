@@ -1,6 +1,13 @@
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import services from '../../services';
 import useApiRequest from '../../hooks/useApiRequest';
+import useSortList from '../../hooks/useSortList';
 import CoinRow from '../CoinRow';
 
 const defaultMarketParams = {
@@ -12,6 +19,7 @@ const CoinTable = () => {
     services.getMarket,
     defaultMarketParams
   );
+  const { sortedList, sortListBy } = useSortList(data);
 
   if (loading) {
     return (
@@ -32,15 +40,30 @@ const CoinTable = () => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
+        data={sortedList}
         renderItem={({ item }) => <CoinRow coinData={item} />}
         keyExtractor={(item) => item.name}
         stickyHeaderIndices={[0]}
         ListHeaderComponent={() => (
           <View style={styles.header}>
-            <Text style={styles.nameCell}>Name</Text>
-            <Text style={styles.numberCell}>Price(USD)</Text>
-            <Text style={styles.numberCell}>Total Volume</Text>
+            <TouchableOpacity
+              style={styles.nameCell}
+              onPress={() => sortListBy('name')}
+            >
+              Name
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.numberCell}
+              onPress={() => sortListBy('currentPrice')}
+            >
+              Price(USD)
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.numberCell}
+              onPress={() => sortListBy('totalVolume')}
+            >
+              Total Volume
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -73,10 +96,12 @@ const styles = StyleSheet.create({
   numberCell: {
     width: '35%',
     textAlign: 'right',
+    cursor: 'pointer',
   },
   nameCell: {
     width: '30%',
     textAlign: 'left',
+    cursor: 'pointer',
   },
 });
 
