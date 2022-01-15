@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     minHeight: 50,
     paddingHorizontal: 30,
+    borderBottomWidth: 2,
+    borderBottomColor: 'rgba(80, 80, 80, 0.1)',
   },
   icon: {
     width: 24,
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     width: '30%',
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
   },
 });
 

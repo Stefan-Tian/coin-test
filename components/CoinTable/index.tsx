@@ -53,6 +53,9 @@ const styles = StyleSheet.create({
     width: '90%',
     maxWidth: 460,
     height: 600,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 10,
   },
   header: {
     display: 'flex',
@@ -62,6 +65,10 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 30,
     backgroundColor: '#fff',
+    borderTopStartRadius: 10,
+    borderTopEndRadius: 10,
+    borderBottomColor: 'rgba(80, 80, 80, 0.1)',
+    borderBottomWidth: 1,
   },
   numberCell: {
     width: '35%',
