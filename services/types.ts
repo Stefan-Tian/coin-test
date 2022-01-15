@@ -27,15 +27,13 @@ export type CoinMarketData = {
 export type MarketsResponse = CoinMarketData[];
 
 export type OrderType =
-  | 'market_cap_desc'
-  | 'gecko_desc'
-  | 'gecko_asc'
-  | 'market_cap_asc'
-  | 'market_cap_desc'
   | 'volume_asc'
   | 'volume_desc'
-  | 'id_asc'
-  | 'id_desc';
+  | 'name_desc'
+  | 'id_desc'
+  | 'price_asc'
+  | 'price_desc'
+  | 'gecko_desc';
 
 export type MarketsParams = {
   vsCurrency: string;
@@ -43,7 +41,7 @@ export type MarketsParams = {
   category?: string;
   order?: OrderType;
   perPage?: number;
-  page?: number;
+  page: number;
   sparkline?: boolean;
   priceChangePercentage?: string;
 };

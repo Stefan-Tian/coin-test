@@ -20,8 +20,26 @@ const CoinTable = () => {
     services.getMarket,
     defaultMarketParams
   );
-  const { sortedList, sortListBy, resetOrder } =
-    useSortList<CoinMarketData>(data);
+
+  const sortListBy = (order: OrderType) => {
+    if (!listRef.current) return;
+    listRef.current.scrollToOffset({ offset: 0 });
+    setParams((oldParams) => ({
+      ...oldParams,
+      order,
+      page: 1,
+    }));
+  };
+
+  const resetOrder = () => {
+    if (!listRef.current) return;
+    listRef.current.scrollToOffset({ offset: 0 });
+    setParams((oldParams) => ({
+      ...oldParams,
+      order: defaultMarketParams.order,
+      page: 1,
+    }));
+  };
 
   if (loading) {
     return (
