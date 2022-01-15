@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
   numberCell: {
     width: '35%',
     textAlign: 'right',
-    cursor: 'pointer',
   },
   nameCell: {
     width: '30%',
