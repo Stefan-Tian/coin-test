@@ -9,6 +9,7 @@ import services from '../../services';
 import useApiRequest from '../../hooks/useApiRequest';
 import useSortList from '../../hooks/useSortList';
 import CoinRow from '../CoinRow';
+import { CoinMarketData } from '../../services/types';
 
 const defaultMarketParams = {
   vsCurrency: 'usd',
@@ -19,7 +20,8 @@ const CoinTable = () => {
     services.getMarket,
     defaultMarketParams
   );
-  const { sortedList, sortListBy } = useSortList(data);
+  const { sortedList, sortListBy, resetOrder } =
+    useSortList<CoinMarketData>(data);
 
   if (loading) {
     return (
@@ -39,7 +41,11 @@ const CoinTable = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity style={styles.reset} onPress={resetOrder}>
+        <Text>reset filter</Text>
+      </TouchableOpacity>
       <FlatList
+        style={styles.list}
         data={sortedList}
         renderItem={({ item }) => <CoinRow coinData={item} />}
         keyExtractor={(item) => item.name}
@@ -50,19 +56,19 @@ const CoinTable = () => {
               style={styles.nameCell}
               onPress={() => sortListBy('name')}
             >
-              Name
+              <Text>Name</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.numberCell}
               onPress={() => sortListBy('currentPrice')}
             >
-              Price(USD)
+              <Text>Price(USD)</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.numberCell}
               onPress={() => sortListBy('totalVolume')}
             >
-              Total Volume
+              <Text>Total Volume</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -76,9 +82,27 @@ const styles = StyleSheet.create({
     width: '90%',
     maxWidth: 460,
     height: 600,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+  },
+  reset: {
+    padding: 6,
+    borderWidth: 2,
+    borderColor: '#2976ca',
+    color: '#2976fa',
+    fontWeight: 'bold',
+    outline: 0,
+    width: 120,
+    textAlign: 'center',
+    borderRadius: 4,
+    marginBottom: 8,
+  },
+  list: {
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 10,
+    width: '100%',
   },
   header: {
     display: 'flex',
