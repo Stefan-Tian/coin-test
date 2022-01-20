@@ -17,6 +17,7 @@ import CoinTableHead, {
   SortDirection,
   SortField,
 } from '../CoinTableHead';
+import { colors } from '../../styles/variables';
 
 const DEFAULT_ORDER_TYPE = 'gecko';
 const DEFAULT_ORDER_DIRECTION = 'desc';
@@ -93,19 +94,25 @@ const CoinTable = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={[styles.reset, { borderColor: loading ? '#e3e3e3' : '#2976ca' }]}
+        style={[
+          styles.reset,
+          { borderColor: loading ? colors.grayLight : colors.primaryLight },
+        ]}
         onPress={resetOrder}
         disabled={loading}
       >
         <Text
-          style={[styles.resetText, { color: loading ? '#b3b3b3' : '#2976fa' }]}
+          style={[
+            styles.resetText,
+            { color: loading ? colors.gray : colors.primary },
+          ]}
         >
           reset
         </Text>
       </TouchableOpacity>
       {loading ? (
         <View style={styles.mask}>
-          <ActivityIndicator size="large" color="#2976fa" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       ) : null}
       <FlatList
@@ -158,7 +165,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(244,244,244,0.5)',
+    backgroundColor: colors.mask,
   },
   reset: {
     paddingHorizontal: 12,
@@ -172,7 +179,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   list: {
-    borderColor: '#ccc',
+    borderColor: colors.listBorder,
     borderWidth: 1,
     borderRadius: 10,
     width: '100%',
@@ -184,10 +191,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     height: 50,
     paddingHorizontal: 30,
-    backgroundColor: '#fff',
+    backgroundColor: colors.headerBg,
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,
-    borderBottomColor: 'rgba(80, 80, 80, 0.1)',
+    borderBottomColor: colors.tableBorder,
     borderBottomWidth: 1,
   },
   numberCell: {

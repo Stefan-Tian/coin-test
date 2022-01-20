@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { CoinMarketData } from '../../services/types';
+import { colors } from '../../styles/variables';
 
 const CoinRow = ({ coinData }: { coinData: CoinMarketData }) => {
   return (
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
     paddingHorizontal: 18,
     borderBottomWidth: 2,
-    borderBottomColor: 'rgba(80, 80, 80, 0.1)',
+    borderBottomColor: colors.tableBorder,
   },
   icon: {
     width: 24,

@@ -1,4 +1,5 @@
 import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
+import { colors } from '../../styles/variables';
 
 export type SortDirection = 'asc' | 'desc';
 export type SortField = 'volume' | 'price' | 'gecko';
@@ -78,13 +79,13 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderBottomWidth: 6,
     borderTopColor: 'transparent',
-    borderBottomColor: '#2976fa',
+    borderBottomColor: colors.primary,
     marginBottom: 2,
   },
   arrowDown: {
     borderTopWidth: 6,
     borderBottomWidth: 0,
-    borderTopColor: '#2976fa',
+    borderTopColor: colors.primary,
     borderBottomColor: 'transparent',
   },
   arrowInactive: {
