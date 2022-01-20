@@ -6,7 +6,7 @@ const CoinRow = ({ coinData }: { coinData: CoinMarketData }) => {
     <View style={styles.container}>
       <View style={styles.nameContainer}>
         <Image source={{ uri: coinData.image }} style={styles.icon} />
-        <Text>{coinData.name}</Text>
+        <Text style={styles.name}>{coinData.name}</Text>
       </View>
       <Text style={styles.numberCell}>{coinData.currentPrice}</Text>
       <Text style={styles.numberCell}>{coinData.totalVolume}</Text>
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     minHeight: 50,
-    paddingHorizontal: 30,
+    paddingHorizontal: 18,
     borderBottomWidth: 2,
     borderBottomColor: 'rgba(80, 80, 80, 0.1)',
   },
@@ -34,6 +34,10 @@ const styles = StyleSheet.create({
     width: '35%',
     textAlign: 'right',
     fontVariant: ['tabular-nums'],
+    fontSize: 12,
+  },
+  name: {
+    fontSize: 12,
   },
   nameContainer: {
     display: 'flex',

@@ -105,7 +105,7 @@ const CoinTable = () => {
       </TouchableOpacity>
       {loading ? (
         <View style={styles.mask}>
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color="#2976fa" />
         </View>
       ) : null}
       <FlatList
@@ -141,8 +141,8 @@ const CoinTable = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    width: '90%',
-    maxWidth: 460,
+    width: '94%',
+    maxWidth: 480,
     height: 600,
     display: 'flex',
     flexDirection: 'column',
