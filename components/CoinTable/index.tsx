@@ -67,8 +67,16 @@ const CoinTable = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.reset} onPress={resetOrder}>
-        <Text style={styles.resetText}>reset filter</Text>
+      <TouchableOpacity
+        style={[styles.reset, { borderColor: loading ? '#e3e3e3' : '#2976ca' }]}
+        onPress={resetOrder}
+        disabled={loading}
+      >
+        <Text
+          style={[styles.resetText, { color: loading ? '#b3b3b3' : '#2976fa' }]}
+        >
+          reset
+        </Text>
       </TouchableOpacity>
       {loading ? (
         <View style={styles.mask}>
@@ -134,13 +142,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderWidth: 2,
-    borderColor: '#2976ca',
     textAlign: 'center',
     borderRadius: 4,
     marginBottom: 8,
   },
   resetText: {
-    color: '#2976fa',
     fontWeight: 'bold',
   },
   list: {

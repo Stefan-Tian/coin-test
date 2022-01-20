@@ -18,6 +18,7 @@ const useApiRequest = <P, R>(
   }, []);
 
   useEffect(() => {
+    if (loading) return;
     setLoading(true);
     setError(null);
 
