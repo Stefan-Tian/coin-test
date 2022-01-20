@@ -27,13 +27,12 @@ export type CoinMarketData = {
 export type MarketsResponse = CoinMarketData[];
 
 export type OrderType =
-  | 'volume_asc'
   | 'volume_desc'
-  | 'name_desc'
-  | 'id_desc'
-  | 'price_asc'
   | 'price_desc'
-  | 'gecko_desc';
+  | 'price_asc'
+  | 'gecko_desc'
+  | 'gecko_asc'
+  | 'volume_asc';
 
 export type MarketsParams = {
   vsCurrency: string;

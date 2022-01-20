@@ -6,18 +6,26 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import services from '../../services';
 import useApiRequest from '../../hooks/useApiRequest';
+import usePagination from '../../hooks/usePagination';
 import CoinRow from '../CoinRow';
 import { CoinMarketData, MarketsParams, OrderType } from '../../services/types';
-import usePagination from '../../hooks/usePagination';
+import CoinTableHead, {
+  CoinTableHeadProps,
+  SortDirection,
+  SortField,
+} from '../CoinTableHead';
+
+const DEFAULT_ORDER_TYPE = 'gecko';
+const DEFAULT_ORDER_DIRECTION = 'desc';
 
 const defaultMarketParams: MarketsParams = {
   vsCurrency: 'usd',
   page: 1,
   perPage: 25,
-  order: 'gecko_desc',
+  order: `${DEFAULT_ORDER_TYPE}_${DEFAULT_ORDER_DIRECTION}`,
 };
 
 const CoinTable = () => {
@@ -27,17 +35,32 @@ const CoinTable = () => {
   );
 
   const listRef = useRef<FlatList<CoinMarketData>>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(
+    DEFAULT_ORDER_DIRECTION
+  );
+  const [prevSortField, setPrevSortField] =
+    useState<SortField>(DEFAULT_ORDER_TYPE);
 
   const { fullList } = usePagination(data, params);
 
-  const sortListBy = (order: OrderType) => {
+  const sortListBy = (sortField: SortField) => {
     if (!listRef.current) return;
+
+    let newDirection: SortDirection = 'desc';
+    if (sortField === prevSortField && sortDirection === 'desc') {
+      newDirection = 'asc';
+    }
+
+    const order: OrderType = `${sortField}_${newDirection}`;
     listRef.current.scrollToOffset({ offset: 0 });
     setParams((oldParams) => ({
       ...oldParams,
       order,
       page: 1,
     }));
+
+    setSortDirection(newDirection);
+    setPrevSortField(sortField);
   };
 
   const resetOrder = () => {
@@ -48,6 +71,8 @@ const CoinTable = () => {
       order: defaultMarketParams.order,
       page: 1,
     }));
+    setSortDirection(DEFAULT_ORDER_DIRECTION);
+    setPrevSortField(DEFAULT_ORDER_TYPE);
   };
 
   const fetchMorePages = () => {
@@ -94,21 +119,18 @@ const CoinTable = () => {
         onEndReachedThreshold={0.5}
         ListHeaderComponent={() => (
           <View style={styles.header}>
-            <View style={styles.nameCell}>
-              <Text>Name</Text>
-            </View>
-            <TouchableOpacity
-              style={styles.numberCell}
-              onPress={() => sortListBy('price_desc')}
-            >
-              <Text>Price(USD)</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.numberCell}
-              onPress={() => sortListBy('volume_desc')}
-            >
-              <Text>Total Volume</Text>
-            </TouchableOpacity>
+            {CoinTableHeadSettings.map((item) => (
+              <CoinTableHead
+                key={item.displayText}
+                displayText={item.displayText}
+                isSortableField={item.isSortableField}
+                headStyles={item.headStyles}
+                field={item.field}
+                sortListBy={sortListBy}
+                activeField={prevSortField}
+                direction={sortDirection}
+              />
+            ))}
           </View>
         )}
       />
@@ -171,11 +193,38 @@ const styles = StyleSheet.create({
   numberCell: {
     width: '35%',
     textAlign: 'right',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   nameCell: {
     width: '30%',
     textAlign: 'left',
   },
 });
+
+const CoinTableHeadSettings: Omit<
+  CoinTableHeadProps,
+  'sortListBy' | 'direction' | 'activeField'
+>[] = [
+  {
+    displayText: 'Name',
+    isSortableField: false,
+    headStyles: styles.nameCell,
+  },
+  {
+    displayText: 'Price(USD)',
+    isSortableField: true,
+    field: 'price',
+    headStyles: styles.numberCell,
+  },
+  {
+    displayText: 'Total Volume',
+    isSortableField: true,
+    field: 'volume',
+    headStyles: styles.numberCell,
+  },
+];
 
 export default CoinTable;
