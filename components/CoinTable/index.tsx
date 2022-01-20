@@ -4,6 +4,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import { useRef } from 'react';
 import services from '../../services';
@@ -20,7 +21,7 @@ const defaultMarketParams: MarketsParams = {
 };
 
 const CoinTable = () => {
-  const { data, error, params, setParams } = useApiRequest(
+  const { data, error, params, loading, setParams } = useApiRequest(
     services.getMarket,
     defaultMarketParams
   );
@@ -69,6 +70,11 @@ const CoinTable = () => {
       <TouchableOpacity style={styles.reset} onPress={resetOrder}>
         <Text style={styles.resetText}>reset filter</Text>
       </TouchableOpacity>
+      {loading ? (
+        <View style={styles.mask}>
+          <ActivityIndicator size="large" />
+        </View>
+      ) : null}
       <FlatList
         style={styles.list}
         data={fullList}
@@ -104,12 +110,25 @@ const CoinTable = () => {
 
 const styles = StyleSheet.create({
   container: {
+    position: 'relative',
     width: '90%',
     maxWidth: 460,
     height: 600,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-end',
+  },
+  mask: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: '100%',
+    height: 510,
+    zIndex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(244,244,244,0.5)',
   },
   reset: {
     paddingHorizontal: 12,
